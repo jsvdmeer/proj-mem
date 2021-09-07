@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.IO;
+using System.Windows;
 
 namespace Memory
 {
@@ -25,51 +14,35 @@ namespace Memory
         public LoadSave()
         {
             InitializeComponent();
+            GetAllSaves();
         }
 
-        private void Save1_Click(object sender, RoutedEventArgs e)
+        private void GetAllSaves()
+        {
+            string dir_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "MemoryGame");
+
+            if (!Directory.Exists(dir_path))
+            {
+                Directory.CreateDirectory(dir_path);
+            }
+
+            string[] allSaves = Directory.GetFiles(dir_path);
+            foreach (string save_file in allSaves)
+            {
+                Console.WriteLine(save_file);
+                save_list.Items.Add(save_file);
+            }
+        }
+
+        private void loadSave_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            string path = @"Save1.csv";
-            if (File.Exists(path))
-            {
-
-            }
-            else
+            string path = save_list.SelectedItem.ToString();
+            if (!File.Exists(path))
             {
                 File.WriteAllText(path, delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter);
             }
-            new Spellenscherm1().ShowDialog();
-        }
-
-        private void Save2_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-            string path = @"Save2.csv";
-            if (File.Exists(path))
-            {
-
-            }
-            else
-            {
-                File.WriteAllText(path, delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter);
-            }
-            new Spellenscherm2().ShowDialog();
-        }
-
-        private void Save3_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-            string path = @"Save2.csv";
-            if (File.Exists(path))
-            {
-
-            }
-            else
-            {
-                File.WriteAllText(path, delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter);
-            }
-            new Spellenscherm3().ShowDialog();
+            new Spellenscherm(path).ShowDialog();
         }
     }
 }

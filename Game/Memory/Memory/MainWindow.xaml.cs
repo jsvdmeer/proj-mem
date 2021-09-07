@@ -1,19 +1,6 @@
-﻿
-using SpellenScherm1;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Memory
 {
@@ -37,7 +24,27 @@ namespace Memory
         /// <param name="e"></param>
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            new NewSave().ShowDialog();
+            string delimiter = ";";
+            this.WindowState = WindowState.Minimized;
+            int save_number = 0;
+
+            string dir_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "MemoryGame");
+
+            if (!Directory.Exists(dir_path))
+            {
+                Directory.CreateDirectory(dir_path);
+            }
+
+            string path = Path.Combine(dir_path, "Save" + save_number + ".csv");
+
+            while (File.Exists(path))
+            {
+                save_number++;
+                path = Path.Combine(dir_path, "Save" + save_number + ".csv");
+            }
+
+            File.WriteAllText(path, delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter);
+            new Spellenscherm(path).ShowDialog();
         }
 
         /// <summary>

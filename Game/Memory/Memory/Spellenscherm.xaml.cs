@@ -1,18 +1,7 @@
-﻿using SpellenScherm2;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.IO;
 
 namespace Memory
@@ -20,15 +9,16 @@ namespace Memory
     /// <summary>
     /// Interaction logic for Spellenscherm.xaml
     /// </summary>
-    public partial class Spellenscherm2 : Window
+    public partial class Spellenscherm : Window
     {
         private MemoryGrid grid;
         public static string delimiter = ";";
-        string path = @"Save2.csv";
-        public Spellenscherm2()
+        string path = "";
+        public Spellenscherm(string path)
         {
             InitializeComponent();
             main = this;
+            this.path = path;
 
             //read savefile
             var reader = new StreamReader(File.OpenRead(path));
@@ -39,7 +29,8 @@ namespace Memory
                 var line = reader.ReadLine();
                 var values = line.Split(';');
 
-                data.Add(new List<String> { values[0], values[1], values[2], values[3]
+                data.Add(new List<String>
+                { values[0], values[1], values[2], values[3]
                         });
             }
             reader.Close();
@@ -47,13 +38,13 @@ namespace Memory
             //loads game
             if (data[0][2] == "SaveReady")
             {
-                MemoryGrid.folder = data[1][3];
+                MemoryGrid.Folder = data[1][3];
 
                 setFolderBox.Visibility = Visibility.Collapsed;
                 setFolder.Visibility = Visibility.Collapsed;
                 folderDisplay.Width = 1058;
 
-                grid = new MemoryGrid(GameGrid, 4, 4);
+                grid = new MemoryGrid(GameGrid, 4, 4, path);
                 start.Visibility = Visibility.Collapsed;
             }
         }
@@ -78,7 +69,7 @@ namespace Memory
             // check if a custom folder has been set
             if (Convert.ToString(folderDisplay.Content) == "Folder: /images" && Thema.Visibility != Visibility.Collapsed)
             {
-                MemoryGrid.folder = "/images";
+                MemoryGrid.Folder = "/images";
             }
 
             //reads savefile
@@ -95,14 +86,14 @@ namespace Memory
             }
             reader.Close();
 
-            File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + data[0][2] + delimiter + data[0][3] + Environment.NewLine + data[1][0] + delimiter + data[1][1] + delimiter + data[1][2] + delimiter + MemoryGrid.folder + Environment.NewLine + data[2][0] + delimiter + data[2][1] + delimiter + data[2][2] + delimiter + data[2][3] + Environment.NewLine + data[3][0] + delimiter + data[3][1] + delimiter + data[3][2] + delimiter + data[3][3] + Environment.NewLine + data[4][0] + delimiter + data[4][1] + delimiter + data[4][2] + delimiter + data[4][3] + Environment.NewLine + data[5][0] + delimiter + data[5][1] + delimiter + data[5][2] + delimiter + data[5][3] + Environment.NewLine);
+            File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + data[0][2] + delimiter + data[0][3] + Environment.NewLine + data[1][0] + delimiter + data[1][1] + delimiter + data[1][2] + delimiter + MemoryGrid.Folder + Environment.NewLine + data[2][0] + delimiter + data[2][1] + delimiter + data[2][2] + delimiter + data[2][3] + Environment.NewLine + data[3][0] + delimiter + data[3][1] + delimiter + data[3][2] + delimiter + data[3][3] + Environment.NewLine + data[4][0] + delimiter + data[4][1] + delimiter + data[4][2] + delimiter + data[4][3] + Environment.NewLine + data[5][0] + delimiter + data[5][1] + delimiter + data[5][2] + delimiter + data[5][3] + Environment.NewLine);
 
             setFolderBox.Visibility = Visibility.Collapsed;
             setFolder.Visibility = Visibility.Collapsed;
             folderDisplay.Width = 1058;
 
             // initialize grid
-            grid = new MemoryGrid(GameGrid, 4, 4);
+            grid = new MemoryGrid(GameGrid, 4, 4, path);
             start.Visibility = Visibility.Collapsed;
             set1.Visibility = Visibility.Collapsed;
             set2.Visibility = Visibility.Collapsed;
@@ -126,9 +117,6 @@ namespace Memory
             name2.Content = userName2;
             set1.Visibility = Visibility.Collapsed;
             set2.Visibility = Visibility.Collapsed;
-
-            //reads savefile
-            string path = @"Save2.csv";
 
             var reader = new StreamReader(File.OpenRead(path));
             var data = new List<List<string>>();
@@ -171,9 +159,8 @@ namespace Memory
             this.Close();
             MemoryGrid.scoreName1Tot = 0;
             MemoryGrid.scoreName2Tot = 0;
-            string path = @"Save2.csv";
             File.WriteAllText(path, delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter);
-            new Spellenscherm2().ShowDialog();
+            new Spellenscherm(path).ShowDialog();
         }
 
         /// <summary>
@@ -225,7 +212,7 @@ namespace Memory
         /// <summary>
         /// Call the scores from the grid and set them on the screen
         /// </summary>
-        internal static Spellenscherm2 main;
+        internal static Spellenscherm main;
         internal string Score1
         {
             get { return scoreName1.Content.ToString(); }
@@ -258,7 +245,7 @@ namespace Memory
         private void SetFolder_Click(object sender, RoutedEventArgs e)
         {
             string folderSet = setFolderBox.Text;
-            MemoryGrid.folder = folderSet;
+            MemoryGrid.Folder = folderSet;
 
             folderDisplay.Content = "Folder: " + folderSet;
         }
@@ -272,12 +259,12 @@ namespace Memory
         {
             if (countClicks == 0)
             {
-                MemoryGrid.mute = true;
+                MemoryGrid.Mute = true;
                 mute.Background = Brushes.Red;
             }
             else if (countClicks == 1)
             {
-                MemoryGrid.mute = false;
+                MemoryGrid.Mute = false;
                 mute.Background = Brushes.White;
                 countClicks = countClicks - 2;
             }
@@ -301,7 +288,7 @@ namespace Memory
         /// <param name="e"></param>
         private void Default_Click(object sender, RoutedEventArgs e)
         {
-            MemoryGrid.folder = "/images";
+            MemoryGrid.Folder = "/images";
             thema.Visibility = Visibility.Collapsed;
             Thema.Visibility = Visibility.Collapsed;
         }
@@ -313,7 +300,7 @@ namespace Memory
         /// <param name="e"></param>
         private void Vormen_Click(object sender, RoutedEventArgs e)
         {
-            MemoryGrid.folder = "/vormen";
+            MemoryGrid.Folder = "/vormen";
             thema.Visibility = Visibility.Collapsed;
             Thema.Visibility = Visibility.Collapsed;
         }
@@ -325,7 +312,7 @@ namespace Memory
         /// <param name="e"></param>
         private void Disney_Click(object sender, RoutedEventArgs e)
         {
-            MemoryGrid.folder = "/disney";
+            MemoryGrid.Folder = "/disney";
             thema.Visibility = Visibility.Collapsed;
             Thema.Visibility = Visibility.Collapsed;
 

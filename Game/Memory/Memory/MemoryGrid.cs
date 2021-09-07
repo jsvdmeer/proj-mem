@@ -10,13 +10,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 
-// memorygrid of save 2
-namespace SpellenScherm2
+namespace Memory
 {
     public class MemoryGrid
     {
         // defines the grid
         private Grid grid;
+
+        // save file path
+        private string path;
 
         // creates 2 players
         public static string Player1 { get; set; }
@@ -52,10 +54,10 @@ namespace SpellenScherm2
         private Image Image2;
 
         // Folder where images are stored
-        public static string folder { get; set; }
+        public static string Folder { get; set; }
 
         // Bool to check if sound is muted
-        public static bool mute { get; set; }
+        public static bool Mute { get; set; }
 
         /// <summary>
         /// Initialize the grid and assign the images to the grid
@@ -63,11 +65,12 @@ namespace SpellenScherm2
         /// <param name="grid">Defines the grid</param>
         /// <param name="rows">How many rows there are</param>
         /// <param name="cols">How many cols there are</param>
-        public MemoryGrid(Grid grid, int rows, int cols)
+        public MemoryGrid(Grid grid, int rows, int cols, string path)
         {
             this.grid = grid;
             this.rows = rows;
             this.cols = cols;
+            this.path = path;
 
             InitializeGrid();
             AddImages();
@@ -93,8 +96,6 @@ namespace SpellenScherm2
         /// </summary>
         private void AddImages()
         {
-            //reads savefile
-            string path = @"Save2.csv";
 
             var reader = new StreamReader(File.OpenRead(path));
             var data = new List<List<string>>();
@@ -127,13 +128,13 @@ namespace SpellenScherm2
                 //Loads in player names
                 if (data[0][0] != "")
                 {
-                    Spellenscherm2.main.name1.Content = data[0][0];
-                    Spellenscherm2.main.set1.Visibility = Visibility.Collapsed;
+                    Spellenscherm.main.name1.Content = data[0][0];
+                    Spellenscherm.main.set1.Visibility = Visibility.Collapsed;
                 }
                 if (data[0][1] != "")
                 {
-                    Spellenscherm2.main.name2.Content = data[0][1];
-                    Spellenscherm2.main.set2.Visibility = Visibility.Collapsed;
+                    Spellenscherm.main.name2.Content = data[0][1];
+                    Spellenscherm.main.set2.Visibility = Visibility.Collapsed;
                 }
 
                 //Loads in cards
@@ -151,7 +152,7 @@ namespace SpellenScherm2
                         {
                             // assign the back of the image
                             Image back = new Image();
-                            back.Source = new BitmapImage(new Uri(folder + "/back.png", UriKind.RelativeOrAbsolute));
+                            back.Source = new BitmapImage(new Uri(Folder + "/back.png", UriKind.RelativeOrAbsolute));
 
                             // when one of the players click on a card
                             back.MouseDown += new System.Windows.Input.MouseButtonEventHandler(CardClick);
@@ -176,7 +177,7 @@ namespace SpellenScherm2
                     {
                         // assign the back of the image
                         Image back = new Image();
-                        back.Source = new BitmapImage(new Uri(folder + "/back.png", UriKind.RelativeOrAbsolute));
+                        back.Source = new BitmapImage(new Uri(Folder + "/back.png", UriKind.RelativeOrAbsolute));
 
                         // when one of the players click on a card
                         back.MouseDown += new System.Windows.Input.MouseButtonEventHandler(CardClick);
@@ -223,9 +224,6 @@ namespace SpellenScherm2
             string C15 = "";
             string C16 = "";
 
-            //reads savefile
-            string path = @"Save2.csv";
-
             var reader = new StreamReader(File.OpenRead(path));
             var data = new List<List<string>>();
 
@@ -266,82 +264,82 @@ namespace SpellenScherm2
                 {
                     if (i == 1 && C1 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C1 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C1 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 2 && C2 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C2 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C2 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 3 && C3 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C3 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C3 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 4 && C4 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C4 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C4 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 5 && C5 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C5 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C5 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 6 && C6 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C6 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C6 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 7 && C7 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C7 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C7 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 8 && C8 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C8 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C8 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 9 && C9 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C9 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C9 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 10 && C10 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C10 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C10 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 11 && C11 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C11 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C11 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 12 && C12 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C12 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C12 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 13 && C13 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C13 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C13 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 14 && C14 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C14 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C14 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 15 && C15 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C15 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C15 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                     else if (i == 16 && C16 != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(folder + "/" + C16 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C16 + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                 }
@@ -369,7 +367,7 @@ namespace SpellenScherm2
                         else
                         {
                             random1.Add(Convert.ToString(imageNR));
-                            ImageSource source = new BitmapImage(new Uri(folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
+                            ImageSource source = new BitmapImage(new Uri(Folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
                             images.Add(source);
 
                             //places the randomly picked cards into the variables
@@ -425,7 +423,7 @@ namespace SpellenScherm2
                         else
                         {
                             random2.Add(Convert.ToString(imageNR));
-                            ImageSource source = new BitmapImage(new Uri(folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
+                            ImageSource source = new BitmapImage(new Uri(Folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
                             images.Add(source);
 
                             //places the randomly picked cards into variables
@@ -505,15 +503,15 @@ namespace SpellenScherm2
             // if its player1's turn, show 'Aan de beurt' under their name
             if (turnName1 == true)
             {
-                Spellenscherm2.main.SetTurn1 = "Aan de beurt";
-                Spellenscherm2.main.SetTurn2 = "";
+                Spellenscherm.main.SetTurn1 = "Aan de beurt";
+                Spellenscherm.main.SetTurn2 = "";
 
             }
             // if its player2's turn, show 'Aan de beurt' under their name
             else if (turnName2 == true)
             {
-                Spellenscherm2.main.SetTurn1 = "";
-                Spellenscherm2.main.SetTurn2 = "Aan de beurt";
+                Spellenscherm.main.SetTurn1 = "";
+                Spellenscherm.main.SetTurn2 = "Aan de beurt";
             }
         }
 
@@ -567,9 +565,6 @@ namespace SpellenScherm2
                 PlaySoundPositive();
                 GetPoint(card1, card2);
 
-
-                //reads savefile
-                string path = @"Save2.csv";
                 string cardnr = null;
 
                 var reader = new StreamReader(File.OpenRead(path));
@@ -647,8 +642,6 @@ namespace SpellenScherm2
         /// </summary>
         private void CheckTurn()
         {
-            //reads savefile
-            string path = @"Save2.csv";
             string delimiter = ";";
 
             var reader = new StreamReader(File.OpenRead(path));
@@ -724,8 +717,8 @@ namespace SpellenScherm2
         /// </summary>
         private void UpdateScore()
         {
-            Spellenscherm2.main.Score1 = "Score: " + scoreName1Tot;
-            Spellenscherm2.main.Score2 = "Score: " + scoreName2Tot;
+            Spellenscherm.main.Score1 = "Score: " + scoreName1Tot;
+            Spellenscherm.main.Score2 = "Score: " + scoreName2Tot;
         }
 
         /// <summary>
@@ -735,8 +728,6 @@ namespace SpellenScherm2
         /// <param name="card2">The second card that has been clicked</param>
         private async void GetPoint(Image card1, Image card2)
         {
-            //reads savefile
-            string path = @"Save2.csv";
             string delimiter = ";";
 
             var reader = new StreamReader(File.OpenRead(path));
@@ -799,8 +790,8 @@ namespace SpellenScherm2
             await Task.Delay(1000);
 
             // show the back of the card again.
-            card1.Source = new BitmapImage(new Uri(folder + "/back.png", UriKind.RelativeOrAbsolute));
-            card2.Source = new BitmapImage(new Uri(folder + "/back.png", UriKind.RelativeOrAbsolute));
+            card1.Source = new BitmapImage(new Uri(Folder + "/back.png", UriKind.RelativeOrAbsolute));
+            card2.Source = new BitmapImage(new Uri(Folder + "/back.png", UriKind.RelativeOrAbsolute));
             hasDelay = false;
         }
 
@@ -814,7 +805,7 @@ namespace SpellenScherm2
             // when the scores of player1 and player2 are the same
             if (scoreName1Tot == scoreName2Tot)
             {
-                if (mute == false)
+                if (Mute == false)
                 {
 
                     System.IO.Stream str = Memory.Properties.Resources.even;
@@ -826,7 +817,7 @@ namespace SpellenScherm2
             // if the scores of player1 and player2 are not the same, announce the winner, who is the player with the most points
             else
             {
-                if (mute == false)
+                if (Mute == false)
                 {
 
                     System.IO.Stream str = Memory.Properties.Resources.win;
@@ -839,7 +830,6 @@ namespace SpellenScherm2
             scoreName1Tot = 0;
             scoreName2Tot = 0;
             numberOfPairs = 0;
-            string path = @"Save2.csv";
             string delimiter = ";";
             File.WriteAllText(path, delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter + Environment.NewLine + delimiter + delimiter + delimiter);
         }
@@ -849,7 +839,7 @@ namespace SpellenScherm2
         /// </summary>
         private void PlaySoundPositive()
         {
-            if (mute == false)
+            if (Mute == false)
             {
                 System.IO.Stream str = Memory.Properties.Resources.pair;
                 System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
@@ -862,7 +852,7 @@ namespace SpellenScherm2
         /// </summary>
         private void PlaySoundNegative()
         {
-            if (mute == false)
+            if (Mute == false)
             {
                 System.IO.Stream str = Memory.Properties.Resources.fail;
                 System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
@@ -875,7 +865,7 @@ namespace SpellenScherm2
         /// </summary>
         private void PlaySoundStupid()
         {
-            if (mute == false)
+            if (Mute == false)
             {
                 System.IO.Stream str = Memory.Properties.Resources.huh;
                 System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
