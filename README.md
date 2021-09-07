@@ -1,4 +1,4 @@
-# proj-mem
+# MemoryGame
 
 Eerste project voor HBO-ICT.  
 Jaar 1, HBO-ICT, NHL-Stenden
