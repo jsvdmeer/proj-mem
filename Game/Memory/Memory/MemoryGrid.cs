@@ -97,18 +97,7 @@ namespace Memory
         private void AddImages()
         {
 
-            var reader = new StreamReader(File.OpenRead(path));
-            var data = new List<List<string>>();
-
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var values = line.Split(';');
-
-                data.Add(new List<String> { values[0], values[1], values[2], values[3]
-                        });
-            }
-            reader.Close();
+            List<List<string>> data = GetDataFromFile();
 
             if (data[0][2] == "SaveReady")
             {
@@ -126,12 +115,12 @@ namespace Memory
                 ShowTurn();
 
                 //Loads in player names
-                if (data[0][0] != "")
+                if (data[0][0].Length > 0)
                 {
                     Spellenscherm.main.name1.Content = data[0][0];
                     Spellenscherm.main.set1.Visibility = Visibility.Collapsed;
                 }
-                if (data[0][1] != "")
+                if (data[0][1].Length > 0)
                 {
                     Spellenscherm.main.name2.Content = data[0][1];
                     Spellenscherm.main.set2.Visibility = Visibility.Collapsed;
@@ -143,12 +132,7 @@ namespace Memory
                 {
                     for (int col = 0; col < cols; col++)
                     {
-
-                        if (data[row + 2][col] == "")
-                        {
-
-                        }
-                        else
+                        if (data[row + 2][col].Length > 0)
                         {
                             // assign the back of the image
                             Image back = new Image();
@@ -220,18 +204,7 @@ namespace Memory
                 }
             }
 
-            var reader = new StreamReader(File.OpenRead(path));
-            var data = new List<List<string>>();
-
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var values = line.Split(';');
-
-                data.Add(new List<String> { values[0], values[1], values[2], values[3]
-                        });
-            }
-            reader.Close();
+            List<List<string>> data = GetDataFromFile();
 
             string delimiter = ";";
 
@@ -258,7 +231,7 @@ namespace Memory
                 //Places cards in the right position and skips the ones already gone
                 for (int i = 0; i < 16; i++)
                 {
-                    if(cells[i] != "")
+                    if(cells[i].Length > 0)
                     {
                         ImageSource source = new BitmapImage(new Uri(Folder + "/" + cells[i] + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
@@ -280,15 +253,18 @@ namespace Memory
                     foreach (var imageNumber in placed_images)
                     {
                         if (dic.ContainsKey(imageNumber))
+                        {
                             dic[imageNumber]++;
+                        }
                         else
+                        {
                             dic[imageNumber] = 1;
+                        }
                     }
 
                     bool tooMany = false;
-                    foreach (var element in dic)
+                    foreach (KeyValuePair<double, int> element in dic)
                     {
-                        Console.WriteLine(element.Key + " appears " + element.Value + " time(s)");
                         if (imageNR == element.Key && element.Value >= 2)
                         {
                             tooMany = true;
@@ -298,13 +274,11 @@ namespace Memory
                     // if the genrated number already exists (in the list 'random1'), generate a new number
                     if (tooMany)
                     {
-                        Console.WriteLine("i--");
                         i--;
                     }
                     // if the generated number does not exists (in the list 'random1'), grab the image with that number
                     else
                     {
-                        Console.WriteLine("Placing image");
                         placed_images.Add(imageNR);
                         ImageSource source = new BitmapImage(new Uri(Folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
@@ -327,6 +301,26 @@ namespace Memory
         }
 
         /// <summary>
+        /// GetDataFromFile
+        /// </summary>
+        /// <returns></returns>
+        private List<List<string>> GetDataFromFile()
+        {
+            StreamReader reader = new StreamReader(File.OpenRead(path));
+            List<List<string>> data = new List<List<string>>();
+
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                string[] values = line.Split(';');
+
+                data.Add(new List<string> { values[0], values[1], values[2], values[3] });
+            }
+            reader.Close();
+            return data;
+        }
+
+        /// <summary>
         /// Turns the card when clicked
         /// </summary>
         /// <param name="sender"></param>
@@ -334,7 +328,10 @@ namespace Memory
         private void CardClick(object sender, MouseButtonEventArgs e)
         {
             // wait with showing the card if this is true, the previous turn needs to finish first
-            if (hasDelay) return;
+            if (hasDelay)
+            {
+                return;
+            }
 
             // if the game does not have to wait, show the card
             Image card = (Image)sender;
@@ -351,13 +348,13 @@ namespace Memory
         private void ShowTurn()
         {
             // if its player1's turn, show 'Aan de beurt' under their name
-            if (turnName1 == true)
+            if (turnName1)
             {
                 Spellenscherm.main.SetTurn1 = "Aan de beurt";
                 Spellenscherm.main.SetTurn2 = "";
             }
             // if its player2's turn, show 'Aan de beurt' under their name
-            else if (turnName2 == true)
+            else if (turnName2)
             {
                 Spellenscherm.main.SetTurn1 = "";
                 Spellenscherm.main.SetTurn2 = "Aan de beurt";
@@ -373,13 +370,13 @@ namespace Memory
             this.card = card;
 
             // card the cards that have been clicked
-            if (numberOfClicks < 2 || numberOfClicks == 2)
+            if (numberOfClicks <= 2)
             {
-                if (this.Image1 == null)
+                if (Image1 == null)
                 {
                     Image1 = card;
                 }
-                else if (this.Image2 == null)
+                else if (Image2 == null)
                 {
                     Image2 = card;
                 }
@@ -413,8 +410,8 @@ namespace Memory
         /// <param name="card2">The second card that has been clicked</param>
         public void CheckPair(Image card1, Image card2)
         {
-            this.Image1 = card1;
-            this.Image2 = card2;
+            Image1 = card1;
+            Image2 = card2;
 
             // if 2 images are clicked, there are the same and the same card is not clicked twice
             if (Convert.ToString(card1.Source) == Convert.ToString(card2.Source) && (card1 != card2))
@@ -424,18 +421,7 @@ namespace Memory
 
                 string cardnr = null;
 
-                var reader = new StreamReader(File.OpenRead(path));
-                var data = new List<List<string>>();
-
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    var values = line.Split(';');
-
-                    data.Add(new List<String> { values[0], values[1], values[2], values[3]
-                        });
-                }
-                reader.Close();
+                List<List<string>> data = GetDataFromFile();
 
                 //turns the card's name into a number
                 for (int b = 1; b < 9; b++)
@@ -454,7 +440,6 @@ namespace Memory
                 {
                     for (x = 0; x < 4; x++)
                     {
-                        var test = data[i][x];
                         if (data[i][x] == cardnr)
                         {
                             data[i][x] = null;
@@ -501,21 +486,10 @@ namespace Memory
         {
             string delimiter = ";";
 
-            var reader = new StreamReader(File.OpenRead(path));
-            var data = new List<List<string>>();
-
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var values = line.Split(';');
-
-                data.Add(new List<String> { values[0], values[1], values[2], values[3]
-                        });
-            }
-            reader.Close();
+            List<List<string>> data = GetDataFromFile();
 
             // check if its player1's turn
-            if (turnName1 == true)
+            if (turnName1)
             {
                 // if player 1 has a point, they keep their turn and their score increases with one
                 if (scoreName1 == 1)
@@ -532,7 +506,7 @@ namespace Memory
                 }
             }
             // check if its player2's turn
-            else if (turnName2 == true)
+            else if (turnName2)
             {
                 // if player 2 has a point, they keep their turn and their score increases with one
                 if (scoreName2 == 1)
@@ -587,21 +561,10 @@ namespace Memory
         {
             string delimiter = ";";
 
-            var reader = new StreamReader(File.OpenRead(path));
-            var data = new List<List<string>>();
-
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var values = line.Split(';');
-
-                data.Add(new List<String> { values[0], values[1], values[2], values[3]
-                        });
-            }
-            reader.Close();
+            List<List<string>> data = GetDataFromFile();
 
             // if its player1's turn, increase their score
-            if (turnName1 == true)
+            if (turnName1)
             {
                 numberOfPairs++;
                 scoreName1++;
@@ -611,7 +574,7 @@ namespace Memory
                 File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + data[0][2] + delimiter + data[0][3] + Environment.NewLine + data[1][0] + delimiter + data[1][1] + delimiter + numberOfPairs + delimiter + data[1][3] + Environment.NewLine + data[2][0] + delimiter + data[2][1] + delimiter + data[2][2] + delimiter + data[2][3] + Environment.NewLine + data[3][0] + delimiter + data[3][1] + delimiter + data[3][2] + delimiter + data[3][3] + Environment.NewLine + data[4][0] + delimiter + data[4][1] + delimiter + data[4][2] + delimiter + data[4][3] + Environment.NewLine + data[5][0] + delimiter + data[5][1] + delimiter + data[5][2] + delimiter + data[5][3] + Environment.NewLine);
             }
             // if its player2's turn, increase their score
-            else if (turnName2 == true)
+            else if (turnName2)
             {
                 numberOfPairs++;
                 scoreName2++;
@@ -639,8 +602,8 @@ namespace Memory
         /// <param name="card2">The second card that has been clicked</param>
         private async void ResetCards(Image card1, Image card2)
         {
-            this.Image1 = card1;
-            this.Image2 = card2;
+            Image1 = card1;
+            Image2 = card2;
 
             // wait a second, show the card first before showing its back again
             hasDelay = true;
@@ -665,7 +628,7 @@ namespace Memory
                 if (Mute == false)
                 {
 
-                    System.IO.Stream str = Memory.Properties.Resources.even;
+                    Stream str = Properties.Resources.even;
                     System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
                     snd.Play();
                 }
@@ -677,7 +640,7 @@ namespace Memory
                 if (Mute == false)
                 {
 
-                    System.IO.Stream str = Memory.Properties.Resources.win;
+                    Stream str = Properties.Resources.win;
                     System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
                     snd.Play();
                 }
@@ -721,7 +684,7 @@ namespace Memory
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine("Cannot find sound");
+                    Console.WriteLine("Cannot find sound", e);
                 }
             }
         }

@@ -44,5 +44,15 @@ namespace Memory
             }
             new Spellenscherm(path).ShowDialog();
         }
+
+        private void deleteSave_Click(object sender, RoutedEventArgs e)
+        {
+            string path = save_list.SelectedItem.ToString();
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                save_list.Items.Remove(path);
+            }
+        }
     }
 }

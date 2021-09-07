@@ -266,7 +266,7 @@ namespace Memory
             {
                 MemoryGrid.Mute = false;
                 mute.Background = Brushes.White;
-                countClicks = countClicks - 2;
+                countClicks -= 2;
             }
             countClicks++;
         }
@@ -354,8 +354,7 @@ namespace Memory
             }
             else if (Background == "Blue" || Background == "blue")
             {
-                SolidColorBrush color = new SolidColorBrush();
-                color = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FF51BDDC"));
+                SolidColorBrush color = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF51BDDC");
                 Home.Background = color;
                 SetBackground.Visibility = Visibility.Collapsed;
             }

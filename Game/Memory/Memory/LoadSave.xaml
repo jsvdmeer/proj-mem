@@ -11,7 +11,8 @@
             <Label Content="Load Game" HorizontalAlignment="Left" Height="74" Margin="272,18,0,0" VerticalAlignment="Top" Width="440" Background="{x:Null}" FontFamily="Viner Hand ITC" FontSize="48" Foreground="White"/>
         </Grid>
         <ListBox x:Name="save_list" HorizontalAlignment="Left" Height="312" VerticalAlignment="Top" Width="412" Margin="10,92,0,0"/>
-        <Button x:Name="loadSave" Content="Load" HorizontalAlignment="Left" Height="47" Margin="501,204,0,0" VerticalAlignment="Top" Width="220" BorderBrush="#FFE47417" FontSize="22" FontFamily="Viner Hand ITC" Background="White" Click="loadSave_Click"/>
+        <Button x:Name="loadSave" Content="Load" HorizontalAlignment="Left" Height="47" Margin="500,130,0,0" VerticalAlignment="Top" Width="220" BorderBrush="#FFE47417" FontSize="22" FontFamily="Viner Hand ITC" Background="White" Click="loadSave_Click"/>
+        <Button x:Name="deleteSave" Content="Delete" HorizontalAlignment="Left" Height="47" Margin="500,182,0,0" VerticalAlignment="Top" Width="220" BorderBrush="#FFE47417" FontSize="22" FontFamily="Viner Hand ITC" Background="White" Click="deleteSave_Click"/>
 
     </Grid>
 
