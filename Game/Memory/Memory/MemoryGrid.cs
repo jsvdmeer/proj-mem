@@ -203,26 +203,22 @@ namespace Memory
             List<ImageSource> images = new List<ImageSource>();
 
             // two lists that keep track of the used images, so there are only 2 cards of the sort
-            List<string> random1 = new List<string>();
-            List<string> random2 = new List<string>();
+            List<int> placed_images = new List<int>();
+
+            List<string> cells = new List<string>();
 
             // variables used for saving the grind into a savefile
-            string C1 = null;
-            string C2 = null;
-            string C3 = null;
-            string C4 = null;
-            string C5 = null;
-            string C6 = null;
-            string C7 = null;
-            string C8 = null;
-            string C9 = "";
-            string C10 = "";
-            string C11 = "";
-            string C12 = "";
-            string C13 = "";
-            string C14 = "";
-            string C15 = "";
-            string C16 = "";
+            for (int i = 0; i < 16; i++)
+            {
+                if (i < 8)
+                {
+                    cells.Add(null);
+                }
+                else
+                {
+                    cells.Add("");
+                }
+            }
 
             var reader = new StreamReader(File.OpenRead(path));
             var data = new List<List<string>>();
@@ -242,104 +238,29 @@ namespace Memory
             //Places savedata inside variables
             if (data[0][2] == "SaveReady")
             {
-                C1 = data[2][0];
-                C2 = data[2][1];
-                C3 = data[2][2];
-                C4 = data[2][3];
-                C5 = data[3][0];
-                C6 = data[3][1];
-                C7 = data[3][2];
-                C8 = data[3][3];
-                C9 = data[4][0];
-                C10 = data[4][1];
-                C11 = data[4][2];
-                C12 = data[4][3];
-                C13 = data[5][0];
-                C14 = data[5][1];
-                C15 = data[5][2];
-                C16 = data[5][3];
+                cells[0] = data[2][0];
+                cells[1] = data[2][1];
+                cells[2] = data[2][2];
+                cells[3] = data[2][3];
+                cells[4] = data[3][0];
+                cells[5] = data[3][1];
+                cells[6] = data[3][2];
+                cells[7] = data[3][3];
+                cells[8] = data[4][0];
+                cells[9] = data[4][1];
+                cells[10] = data[4][2];
+                cells[11] = data[4][3];
+                cells[12] = data[5][0];
+                cells[13] = data[5][1];
+                cells[14] = data[5][2];
+                cells[15] = data[5][3];
 
                 //Places cards in the right position and skips the ones already gone
-                for (int i = 1; i < 17; i++)
+                for (int i = 0; i < 16; i++)
                 {
-                    if (i == 1 && C1 != "")
+                    if(cells[i] != "")
                     {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C1 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 2 && C2 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C2 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 3 && C3 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C3 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 4 && C4 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C4 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 5 && C5 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C5 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 6 && C6 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C6 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 7 && C7 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C7 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 8 && C8 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C8 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 9 && C9 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C9 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 10 && C10 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C10 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 11 && C11 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C11 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 12 && C12 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C12 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 13 && C13 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C13 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 14 && C14 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C14 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 15 && C15 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C15 + ".png", UriKind.RelativeOrAbsolute));
-                        images.Add(source);
-                    }
-                    else if (i == 16 && C16 != "")
-                    {
-                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + C16 + ".png", UriKind.RelativeOrAbsolute));
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + cells[i] + ".png", UriKind.RelativeOrAbsolute));
                         images.Add(source);
                     }
                 }
@@ -349,129 +270,58 @@ namespace Memory
                 // randomizer
                 for (int i = 0; i < 16; i++)
                 {
-                    if (i < 8)
+                    // generate a random int between 1 and 8
+                    Random rnd = new Random();
+
+                    // a variable that represents the image that is going to be used
+                    int imageNR = rnd.Next(1, 9);
+
+                    var dic = new Dictionary<double, int>();
+                    foreach (var imageNumber in placed_images)
                     {
-                        // a variable that represents the image that is going to be used
-                        int imageNR = 0;
-
-                        // generate a random int between 1 and 8
-                        Random rnd = new Random();
-                        imageNR = rnd.Next(1, 9);
-
-                        // if the genrated number already exists (in the list 'random1'), generate a new number
-                        if (random1.Contains(Convert.ToString(imageNR)))
-                        {
-                            i--;
-                        }
-                        // if the generated number does not exists (in the list 'random1'), grab the image with that number
+                        if (dic.ContainsKey(imageNumber))
+                            dic[imageNumber]++;
                         else
-                        {
-                            random1.Add(Convert.ToString(imageNR));
-                            ImageSource source = new BitmapImage(new Uri(Folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
-                            images.Add(source);
+                            dic[imageNumber] = 1;
+                    }
 
-                            //places the randomly picked cards into the variables
-                            if (i == 0)
-                            {
-                                C1 = Convert.ToString(imageNR);
-                            }
-                            if (i == 1)
-                            {
-                                C2 = Convert.ToString(imageNR);
-                            }
-                            if (i == 2)
-                            {
-                                C3 = Convert.ToString(imageNR);
-                            }
-                            if (i == 3)
-                            {
-                                C4 = Convert.ToString(imageNR);
-                            }
-                            if (i == 4)
-                            {
-                                C5 = Convert.ToString(imageNR);
-                            }
-                            if (i == 5)
-                            {
-                                C6 = Convert.ToString(imageNR);
-                            }
-                            if (i == 6)
-                            {
-                                C7 = Convert.ToString(imageNR);
-                            }
-                            if (i == 7)
-                            {
-                                C8 = Convert.ToString(imageNR);
-                            }
+                    bool tooMany = false;
+                    foreach (var element in dic)
+                    {
+                        Console.WriteLine(element.Key + " appears " + element.Value + " time(s)");
+                        if (imageNR == element.Key && element.Value >= 2)
+                        {
+                            tooMany = true;
                         }
                     }
-                    if (i >= 8)
+
+                    // if the genrated number already exists (in the list 'random1'), generate a new number
+                    if (tooMany)
                     {
-                        // a variable that represents the image that is going to be used
-                        int imageNR = 0;
+                        Console.WriteLine("i--");
+                        i--;
+                    }
+                    // if the generated number does not exists (in the list 'random1'), grab the image with that number
+                    else
+                    {
+                        Console.WriteLine("Placing image");
+                        placed_images.Add(imageNR);
+                        ImageSource source = new BitmapImage(new Uri(Folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
+                        images.Add(source);
 
-                        // generate a random int between 1 and 8
-                        Random rnd = new Random();
-                        imageNR = rnd.Next(1, 9);
-
-                        // if the genrated number already exists (in the list 'random2'), generate a new number
-                        if (random2.Contains(Convert.ToString(imageNR)))
-                        {
-                            i--;
-                        }
-                        // if the generated number does not exists (in the list 'random2'), grab the image with that number
-                        else
-                        {
-                            random2.Add(Convert.ToString(imageNR));
-                            ImageSource source = new BitmapImage(new Uri(Folder + "/" + imageNR + ".png", UriKind.RelativeOrAbsolute));
-                            images.Add(source);
-
-                            //places the randomly picked cards into variables
-                            if (i == 8)
-                            {
-                                C9 = Convert.ToString(imageNR);
-                            }
-                            if (i == 9)
-                            {
-                                C10 = Convert.ToString(imageNR);
-                            }
-                            if (i == 10)
-                            {
-                                C11 = Convert.ToString(imageNR);
-                            }
-                            if (i == 11)
-                            {
-                                C12 = Convert.ToString(imageNR);
-                            }
-                            if (i == 12)
-                            {
-                                C13 = Convert.ToString(imageNR);
-                            }
-                            if (i == 13)
-                            {
-                                C14 = Convert.ToString(imageNR);
-                            }
-                            if (i == 14)
-                            {
-                                C15 = Convert.ToString(imageNR);
-                            }
-                            if (i == 15)
-                            {
-                                C16 = Convert.ToString(imageNR);
-                            }
-                        }
+                        cells[i] = Convert.ToString(imageNR);
                     }
                 }
             }
             if (data[0][2] == "SaveReady")
             {
                 //writes the variables into the savefile
-                File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + "SaveReady" + delimiter + data[0][3] + Environment.NewLine + data[1][0] + delimiter + data[1][1] + delimiter + data[1][2] + delimiter + data[1][3] + Environment.NewLine + C1 + delimiter + C2 + delimiter + C3 + delimiter + C4 + Environment.NewLine + C5 + delimiter + C6 + delimiter + C7 + delimiter + C8 + Environment.NewLine + C9 + delimiter + C10 + delimiter + C11 + delimiter + C12 + Environment.NewLine + C13 + delimiter + C14 + delimiter + C15 + delimiter + C16 + Environment.NewLine);
+                File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + "SaveReady" + delimiter + data[0][3] + Environment.NewLine + data[1][0] + delimiter + data[1][1] + delimiter + data[1][2] + delimiter + data[1][3] + Environment.NewLine + cells[0] + delimiter + cells[1] + delimiter + cells[2] + delimiter + cells[3] + Environment.NewLine + cells[4] + delimiter + cells[5] + delimiter + cells[6] + delimiter + cells[7] + Environment.NewLine + cells[8] + delimiter + cells[9] + delimiter + cells[10] + delimiter + cells[11] + Environment.NewLine + cells[12] + delimiter + cells[13] + delimiter + cells[14] + delimiter + cells[15] + Environment.NewLine);
             }
             else
             {
                 //writes the variables into the savefile
-                File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + "SaveReady" + delimiter + data[0][3] + Environment.NewLine + "0" + delimiter + "0" + delimiter + 0 + delimiter + data[1][3] + Environment.NewLine + C1 + delimiter + C2 + delimiter + C3 + delimiter + C4 + Environment.NewLine + C5 + delimiter + C6 + delimiter + C7 + delimiter + C8 + Environment.NewLine + C9 + delimiter + C10 + delimiter + C11 + delimiter + C12 + Environment.NewLine + C13 + delimiter + C14 + delimiter + C15 + delimiter + C16 + Environment.NewLine);
+                File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + "SaveReady" + delimiter + data[0][3] + Environment.NewLine + "0" + delimiter + "0" + delimiter + 0 + delimiter + data[1][3] + Environment.NewLine + cells[0] + delimiter + cells[1] + delimiter + cells[2] + delimiter + cells[3] + Environment.NewLine + cells[4] + delimiter + cells[5] + delimiter + cells[6] + delimiter + cells[7] + Environment.NewLine + cells[8] + delimiter + cells[9] + delimiter + cells[10] + delimiter + cells[11] + Environment.NewLine + cells[12] + delimiter + cells[13] + delimiter + cells[14] + delimiter + cells[15] + Environment.NewLine);
             }
             return images;
         }
@@ -505,7 +355,6 @@ namespace Memory
             {
                 Spellenscherm.main.SetTurn1 = "Aan de beurt";
                 Spellenscherm.main.SetTurn2 = "";
-
             }
             // if its player2's turn, show 'Aan de beurt' under their name
             else if (turnName2 == true)
@@ -526,7 +375,6 @@ namespace Memory
             // card the cards that have been clicked
             if (numberOfClicks < 2 || numberOfClicks == 2)
             {
-
                 if (this.Image1 == null)
                 {
                     Image1 = card;
@@ -540,12 +388,21 @@ namespace Memory
             // when to cards have been clicked, check if they are a pair
             if (numberOfClicks == 2)
             {
-                CheckPair(Image1, Image2);
+                // if the same image is not clicked
+                if (Image1 != Image2)
+                {
+                    CheckPair(Image1, Image2);
 
-                // reset the variables for the next turn
-                numberOfClicks = 0;
-                Image1 = null;
-                Image2 = null;
+                    // reset the variables for the next turn
+                    numberOfClicks = 0;
+                    Image1 = null;
+                    Image2 = null;
+                }
+                else
+                {
+                    numberOfClicks--;
+                    Image2 = null;
+                }
             }
         }
 
@@ -562,7 +419,7 @@ namespace Memory
             // if 2 images are clicked, there are the same and the same card is not clicked twice
             if (Convert.ToString(card1.Source) == Convert.ToString(card2.Source) && (card1 != card2))
             {
-                PlaySoundPositive();
+                PlaySound("pair");
                 GetPoint(card1, card2);
 
                 string cardnr = null;
@@ -610,7 +467,7 @@ namespace Memory
             // if 2 images are clicked, they are not the same and the same card is not clicked twice
             else
             {
-                PlaySoundNegative();
+                PlaySound("fail");
                 ResetCards(Image1, Image2);
             }
 
@@ -619,7 +476,7 @@ namespace Memory
             // if the same card is clicked twice, the player keeps their turn
             if (Convert.ToString(card1.Source) == Convert.ToString(card2.Source) && (card1 == card2))
             {
-                PlaySoundStupid();
+                PlaySound("huh");
                 StayTurn();
             }
 
@@ -835,41 +692,37 @@ namespace Memory
         }
 
         /// <summary>
-        /// Play a positive soundeffect
+        /// Play a soundeffect
         /// </summary>
-        private void PlaySoundPositive()
+        private void PlaySound(string mood)
         {
             if (Mute == false)
             {
-                System.IO.Stream str = Memory.Properties.Resources.pair;
-                System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-                snd.Play();
-            }
-        }
+                Stream str = null;
+                switch (mood)
+                {
+                    case "pair":
+                        str = Properties.Resources.pair;
+                        break;
+                    case "fail":
+                        str = Properties.Resources.fail;
+                        break;
+                    case "huh":
+                        str = Properties.Resources.huh;
+                        break;
+                    default:
+                        break;
+                }
 
-        /// <summary>
-        /// Play a negaive soundeffect
-        /// </summary>
-        private void PlaySoundNegative()
-        {
-            if (Mute == false)
-            {
-                System.IO.Stream str = Memory.Properties.Resources.fail;
-                System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-                snd.Play();
-            }
-        }
-
-        /// <summary>
-        /// Play a soundeffect when the same card is clicked twice
-        /// </summary>
-        private void PlaySoundStupid()
-        {
-            if (Mute == false)
-            {
-                System.IO.Stream str = Memory.Properties.Resources.huh;
-                System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-                snd.Play();
+                try
+                {
+                    System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
+                    snd.Play();
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Cannot find sound");
+                }
             }
         }
 
