@@ -73,7 +73,7 @@ namespace Memory
             this.path = path;
 
             InitializeGrid();
-            AddImages();
+            PlayGame();
         }
 
         /// <summary>
@@ -91,10 +91,16 @@ namespace Memory
             }
         }
 
+        private bool PlayGame()
+        {
+            LoadImages();
+            return true;
+        }
+
         /// <summary>
         /// Adds images to the grid
         /// </summary>
-        private void AddImages()
+        private void LoadImages()
         {
 
             List<List<string>> data = GetDataFromFile();
@@ -390,6 +396,20 @@ namespace Memory
                 {
                     CheckPair(Image1, Image2);
 
+                    CheckTurn();
+                    UpdateScore();
+
+                    // if all the pair have been found
+                    if (numberOfPairs == 8)
+                    {
+                        CheckWinner();
+                    }
+
+                    // reset the variables for the next turn
+                    scoreName1 = 0;
+                    scoreName2 = 0;
+                    ShowTurn();
+
                     // reset the variables for the next turn
                     numberOfClicks = 0;
                     Image1 = null;
@@ -408,7 +428,7 @@ namespace Memory
         /// </summary>
         /// <param name="card1">The first card that has been clicked</param>
         /// <param name="card2">The second card that has been clicked</param>
-        public void CheckPair(Image card1, Image card2)
+        public bool CheckPair(Image card1, Image card2)
         {
             Image1 = card1;
             Image2 = card2;
@@ -448,35 +468,15 @@ namespace Memory
                 }
 
                 File.WriteAllText(path, data[0][0] + delimiter + data[0][1] + delimiter + data[0][2] + delimiter + data[0][3] + Environment.NewLine + data[1][0] + delimiter + data[1][1] + delimiter + data[1][2] + delimiter + data[1][3] + Environment.NewLine + data[2][0] + delimiter + data[2][1] + delimiter + data[2][2] + delimiter + data[2][3] + Environment.NewLine + data[3][0] + delimiter + data[3][1] + delimiter + data[3][2] + delimiter + data[3][3] + Environment.NewLine + data[4][0] + delimiter + data[4][1] + delimiter + data[4][2] + delimiter + data[4][3] + Environment.NewLine + data[5][0] + delimiter + data[5][1] + delimiter + data[5][2] + delimiter + data[5][3] + Environment.NewLine);
+                return true;
             }
             // if 2 images are clicked, they are not the same and the same card is not clicked twice
             else
             {
                 PlaySound("fail");
                 ResetCards(Image1, Image2);
+                return false;
             }
-
-            CheckTurn();
-
-            // if the same card is clicked twice, the player keeps their turn
-            if (Convert.ToString(card1.Source) == Convert.ToString(card2.Source) && (card1 == card2))
-            {
-                PlaySound("huh");
-                StayTurn();
-            }
-
-            UpdateScore();
-
-            // if all the pair have been found
-            if (numberOfPairs == 8)
-            {
-                CheckWinner();
-            }
-
-            // reset the variables for the next turn
-            scoreName1 = 0;
-            scoreName2 = 0;
-            ShowTurn();
         }
 
         /// <summary>
